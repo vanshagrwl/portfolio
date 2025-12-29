@@ -1,13 +1,38 @@
-import { useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { useEffect, useState } from 'react';
+import { motion, useScroll, useSpring, useTransform } from 'framer-motion';
 import { HeroBento } from './components/HeroBento';
 import { Experience } from './components/Experience';
 import { Skills } from './components/Skills';
 import { Projects } from './components/Projects';
 import { Certificates } from './components/Certificates';
 import { Footer } from './components/Footer';
+import { useScrollBlur } from './hooks/useScrollBlur';
 
 function App() {
+  const [isLoaded, setIsLoaded] = useState(false);
+  const { scrollYProgress } = useScroll();
+  const { blur } = useScrollBlur();
+  
+  // Spring animation for scroll progress
+  const smoothProgress = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001
+  });
+
+  // Page stretch effect based on scroll position (like Vivo notification)
+  const pageScale = useTransform(
+    smoothProgress,
+    [0, 0.1, 0.9, 1],
+    [1.05, 1, 1, 1.05]
+  );
+  
+  const pageY = useTransform(
+    smoothProgress,
+    [0, 0.1, 0.9, 1],
+    [-20, 0, 0, -20]
+  );
+
   useEffect(() => {
     const handleSmoothScroll = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
@@ -22,11 +47,32 @@ function App() {
     };
 
     document.addEventListener('click', handleSmoothScroll);
+    
+    // Page load animation
+    setIsLoaded(true);
+    
     return () => document.removeEventListener('click', handleSmoothScroll);
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#050505] text-white relative overflow-x-hidden">
+    <motion.div 
+      className="min-h-screen bg-[#050505] text-white relative overflow-x-hidden"
+      initial={{ scale: 1.1, y: 50, opacity: 0 }}
+      animate={isLoaded ? { scale: 1, y: 0, opacity: 1 } : {}}
+      transition={{
+        type: 'spring',
+        stiffness: 100,
+        damping: 20,
+        mass: 0.5,
+        duration: 0.8
+      }}
+      style={{
+        scale: pageScale,
+        y: pageY,
+        filter: blur > 0 ? `blur(${blur}px)` : 'blur(0px)',
+        transition: 'filter 0.3s ease-out'
+      }}
+    >
       {/* Animated background gradient */}
       <motion.div
         className="fixed inset-0 pointer-events-none z-0"
@@ -52,15 +98,20 @@ function App() {
         }}
       />
 
-      <div className="relative z-10">
+      <motion.div 
+        className="relative z-10"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.3, duration: 0.6 }}
+      >
         <HeroBento />
         <Experience />
         <Skills />
         <Projects />
         <Certificates />
         <Footer />
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   );
 }
 

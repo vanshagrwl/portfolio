@@ -65,6 +65,30 @@
       animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
     }
   }
+  
+  /* Spring animation support */
+  @supports (animation-timing-function: cubic-bezier(0.68, -0.55, 0.265, 1.55)) {
+    .spring-bounce {
+      animation-timing-function: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+  }
+  
+  /* Smooth page transitions */
+  body {
+    overscroll-behavior-y: contain;
+  }
+  
+  /* Mobile overscroll effect */
+  @media (max-width: 768px) {
+    html {
+      overscroll-behavior-y: contain;
+    }
+    
+    body {
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior-y: contain;
+    }
+  }
 
   ::-webkit-scrollbar {
     width: 8px;

@@ -2,24 +2,50 @@ import { motion } from 'framer-motion';
 import { Github, Linkedin, Mail, Send } from 'lucide-react';
 import { useMagneticEffect } from '../hooks/useMagneticEffect';
 import { useState } from 'react';
+import { useBounceEffect } from '../hooks/useBounceEffect';
 
 const SocialButton = ({ icon: Icon, href, label }: { icon: any; href: string; label: string }) => {
   const { ref, position, handleMouseMove, handleMouseLeave } = useMagneticEffect(0.2);
+  const { isBouncing, triggerBounce } = useBounceEffect();
 
   return (
     <motion.a
       ref={ref as React.Ref<HTMLAnchorElement>}
       href={href}
       onMouseMove={handleMouseMove as React.MouseEventHandler<HTMLAnchorElement>}
-      onMouseLeave={handleMouseLeave}
-      animate={{ x: position.x, y: position.y, rotate: [0, 5, -5, 0] }}
+      onMouseLeave={() => {
+        handleMouseLeave();
+        triggerBounce();
+      }}
+      animate={{ 
+        x: position.x, 
+        y: position.y, 
+        rotate: [0, 5, -5, 0],
+        scale: isBouncing ? [1.15, 1.3, 0.9, 1] : 1,
+        y: isBouncing ? [0, -8, 4, 0] : position.y
+      }}
       transition={{ 
-        x: { type: 'spring', stiffness: 150, damping: 15, mass: 0.1 },
-        y: { type: 'spring', stiffness: 150, damping: 15, mass: 0.1 },
-        rotate: { duration: 0.5, repeat: Infinity, repeatDelay: 2 }
+        x: { type: 'spring' as const, stiffness: 150, damping: 15, mass: 0.1 },
+        y: { type: 'spring' as const, stiffness: 150, damping: 15, mass: 0.1 },
+        rotate: { duration: 0.5, repeat: Infinity, repeatDelay: 2 },
+        scale: isBouncing ? {
+          type: 'spring' as const,
+          stiffness: 500,
+          damping: 12,
+          times: [0, 0.3, 0.7, 1]
+        } : { type: 'spring' as const, stiffness: 400, damping: 17 }
       }}
       className="group relative w-16 h-16 sm:w-20 sm:h-20 rounded-full backdrop-blur-2xl bg-white/[0.03] border border-white/[0.05] flex items-center justify-center overflow-hidden"
-      whileHover={{ scale: 1.15, boxShadow: '0 0 30px rgba(124, 58, 237, 0.6)' }}
+      whileHover={{ 
+        scale: 1.15, 
+        boxShadow: '0 0 30px rgba(124, 58, 237, 0.6)',
+        rotate: 5,
+        transition: {
+          type: 'spring' as const,
+          stiffness: 400,
+          damping: 17
+        }
+      }}
       whileTap={{ scale: 0.9 }}
       aria-label={label}
     >
