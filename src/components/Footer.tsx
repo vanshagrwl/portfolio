@@ -19,10 +19,9 @@ const SocialButton = ({ icon: Icon, href, label }: { icon: any; href: string; la
       }}
       animate={{ 
         x: position.x, 
-        y: position.y, 
+        y: isBouncing ? [position.y, position.y - 8, position.y + 4, position.y] : position.y, 
         rotate: [0, 5, -5, 0],
-        scale: isBouncing ? [1.15, 1.3, 0.9, 1] : 1,
-        y: isBouncing ? [0, -8, 4, 0] : position.y
+        scale: isBouncing ? [1.15, 1.3, 0.9, 1] : 1
       }}
       transition={{ 
         x: { type: 'spring' as const, stiffness: 150, damping: 15, mass: 0.1 },
