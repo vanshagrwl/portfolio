@@ -32,9 +32,17 @@
   /* Professional scroll blur optimization */
   .scroll-blur-overlay {
     transform: translateZ(0);
-    will-change: opacity;
+    will-change: opacity, transform;
     backface-visibility: hidden;
     -webkit-font-smoothing: antialiased;
+    isolation: isolate;
+  }
+  
+  /* Content behind blur effect */
+  .content-behind-blur {
+    transform: translateZ(0);
+    will-change: transform;
+    backface-visibility: hidden;
   }
   
   /* Fix text clipping in headings */

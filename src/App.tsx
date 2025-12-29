@@ -11,11 +11,21 @@ function App() {
   const { scrollY } = useScroll();
   
   // Transform scroll position to blur opacity
-  // Professional implementation: starts at 80px, fully visible at 200px
+  // More dramatic: starts earlier, fully visible sooner for wow effect
   const blurOpacity = useTransform(
     scrollY,
-    [80, 200],
+    [60, 180],
     [0, 1],
+    {
+      clamp: true
+    }
+  );
+  
+  // Additional transform for content scale effect (content appears to go behind)
+  const contentScale = useTransform(
+    scrollY,
+    [60, 180],
+    [1, 0.98],
     {
       clamp: true
     }
@@ -65,51 +75,75 @@ function App() {
         }}
       />
 
-      {/* Professional scroll-based blur effect - Premium implementation */}
+      {/* Dramatic scroll blur effect - Content hiding behind glass */}
       <motion.div
         className="fixed top-0 left-0 right-0 pointer-events-none z-50 scroll-blur-overlay"
         style={{
           opacity: blurOpacity,
-          height: '120px',
+          height: '200px',
           background: `
             linear-gradient(
               to bottom,
-              rgba(5, 5, 5, 0.7) 0%,
-              rgba(5, 5, 5, 0.4) 40%,
-              rgba(5, 5, 5, 0.1) 70%,
+              rgba(5, 5, 5, 0.95) 0%,
+              rgba(5, 5, 5, 0.85) 20%,
+              rgba(5, 5, 5, 0.7) 40%,
+              rgba(5, 5, 5, 0.5) 60%,
+              rgba(5, 5, 5, 0.3) 80%,
               transparent 100%
             )
           `,
-          backdropFilter: 'blur(12px) saturate(150%)',
-          WebkitBackdropFilter: 'blur(12px) saturate(150%)',
-          borderBottom: '1px solid rgba(255, 255, 255, 0.06)',
+          backdropFilter: 'blur(30px) saturate(180%)',
+          WebkitBackdropFilter: 'blur(30px) saturate(180%)',
+          borderBottom: '2px solid rgba(255, 255, 255, 0.1)',
           boxShadow: `
-            0 1px 0 0 rgba(255, 255, 255, 0.05) inset,
-            0 -1px 0 0 rgba(0, 0, 0, 0.1)
+            0 2px 8px 0 rgba(0, 0, 0, 0.3),
+            0 1px 0 0 rgba(255, 255, 255, 0.1) inset,
+            0 -4px 12px 0 rgba(0, 0, 0, 0.2)
           `,
           maskImage: 'linear-gradient(to bottom, black 0%, transparent 100%)',
           WebkitMaskImage: 'linear-gradient(to bottom, black 0%, transparent 100%)',
         }}
       />
       
-      {/* Subtle top fade overlay for extra depth */}
+      {/* Strong blur layer for content hiding effect */}
       <motion.div
         className="fixed top-0 left-0 right-0 pointer-events-none z-49"
         style={{
           opacity: blurOpacity,
-          height: '80px',
-          background: 'linear-gradient(to bottom, rgba(5, 5, 5, 0.3) 0%, transparent 100%)',
+          height: '150px',
+          backdropFilter: 'blur(20px)',
+          WebkitBackdropFilter: 'blur(20px)',
+          background: 'linear-gradient(to bottom, rgba(5, 5, 5, 0.6) 0%, rgba(5, 5, 5, 0.3) 50%, transparent 100%)',
+          maskImage: 'linear-gradient(to bottom, black 0%, transparent 100%)',
+          WebkitMaskImage: 'linear-gradient(to bottom, black 0%, transparent 100%)',
+        }}
+      />
+      
+      {/* Glass edge highlight for depth */}
+      <motion.div
+        className="fixed top-0 left-0 right-0 pointer-events-none z-51"
+        style={{
+          opacity: blurOpacity,
+          height: '1px',
+          background: 'linear-gradient(to right, transparent, rgba(255, 255, 255, 0.2), transparent)',
+          boxShadow: '0 1px 2px 0 rgba(255, 255, 255, 0.1)',
         }}
       />
 
-      <div className="relative z-10">
+      <motion.div 
+        className="relative z-10"
+        style={{
+          scale: contentScale,
+          transformOrigin: 'top center',
+        }}
+      >
         <HeroBento />
         <Experience />
         <Skills />
         <Projects />
         <Certificates />
         <Footer />
-      </div>
+      </motion.div>
     </div>
   );
 }
