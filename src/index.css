@@ -29,6 +29,14 @@
     backface-visibility: hidden;
   }
   
+  /* Professional scroll blur optimization */
+  .scroll-blur-overlay {
+    transform: translateZ(0);
+    will-change: opacity;
+    backface-visibility: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+  
   /* Fix text clipping in headings */
   h1, h2, h3, h4, h5, h6 {
     line-height: 1.1;

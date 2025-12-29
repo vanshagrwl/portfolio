@@ -11,11 +11,14 @@ function App() {
   const { scrollY } = useScroll();
   
   // Transform scroll position to blur opacity
-  // Blur starts appearing at 50px scroll, fully visible at 250px for smoother transition
+  // Professional implementation: starts at 80px, fully visible at 200px
   const blurOpacity = useTransform(
     scrollY,
-    [50, 250],
-    [0, 1]
+    [80, 200],
+    [0, 1],
+    {
+      clamp: true
+    }
   );
 
   useEffect(() => {
@@ -62,20 +65,40 @@ function App() {
         }}
       />
 
-      {/* Scroll-based glassy blur effect at top - Glassmorphism style */}
+      {/* Professional scroll-based blur effect - Premium implementation */}
       <motion.div
-        className="fixed top-0 left-0 right-0 pointer-events-none z-50"
+        className="fixed top-0 left-0 right-0 pointer-events-none z-50 scroll-blur-overlay"
         style={{
           opacity: blurOpacity,
-          height: '180px',
-          background: 'linear-gradient(to bottom, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.05) 20%, rgba(255, 255, 255, 0.03) 50%, rgba(255, 255, 255, 0.01) 80%, transparent 100%)',
-          backdropFilter: 'blur(20px) saturate(180%)',
-          WebkitBackdropFilter: 'blur(20px) saturate(180%)',
-          borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
-          boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.1)',
+          height: '120px',
+          background: `
+            linear-gradient(
+              to bottom,
+              rgba(5, 5, 5, 0.7) 0%,
+              rgba(5, 5, 5, 0.4) 40%,
+              rgba(5, 5, 5, 0.1) 70%,
+              transparent 100%
+            )
+          `,
+          backdropFilter: 'blur(12px) saturate(150%)',
+          WebkitBackdropFilter: 'blur(12px) saturate(150%)',
+          borderBottom: '1px solid rgba(255, 255, 255, 0.06)',
+          boxShadow: `
+            0 1px 0 0 rgba(255, 255, 255, 0.05) inset,
+            0 -1px 0 0 rgba(0, 0, 0, 0.1)
+          `,
           maskImage: 'linear-gradient(to bottom, black 0%, transparent 100%)',
           WebkitMaskImage: 'linear-gradient(to bottom, black 0%, transparent 100%)',
-          willChange: 'opacity',
+        }}
+      />
+      
+      {/* Subtle top fade overlay for extra depth */}
+      <motion.div
+        className="fixed top-0 left-0 right-0 pointer-events-none z-49"
+        style={{
+          opacity: blurOpacity,
+          height: '80px',
+          background: 'linear-gradient(to bottom, rgba(5, 5, 5, 0.3) 0%, transparent 100%)',
         }}
       />
 
