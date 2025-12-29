@@ -190,7 +190,7 @@ export const Footer = () => {
             Crafted by Vansh Agarwal | Jaipur, India
           </p>
           <p className="text-gray-500 text-sm">
-            © 2024 All rights reserved
+            © 2025 All rights reserved
           </p>
         </motion.div>
       </div>
