@@ -62,29 +62,20 @@ function App() {
         }}
       />
 
-      {/* Scroll-based horizontal blur effect at top - Bigger and more blurry */}
+      {/* Scroll-based glassy blur effect at top - Glassmorphism style */}
       <motion.div
         className="fixed top-0 left-0 right-0 pointer-events-none z-50"
         style={{
           opacity: blurOpacity,
-          height: '250px',
-          background: 'linear-gradient(to bottom, rgba(5, 5, 5, 0.99) 0%, rgba(5, 5, 5, 0.95) 15%, rgba(5, 5, 5, 0.9) 30%, rgba(5, 5, 5, 0.8) 50%, rgba(5, 5, 5, 0.6) 70%, rgba(5, 5, 5, 0.3) 85%, transparent 100%)',
-          backdropFilter: 'blur(40px) saturate(200%)',
-          WebkitBackdropFilter: 'blur(40px) saturate(200%)',
+          height: '180px',
+          background: 'linear-gradient(to bottom, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.05) 20%, rgba(255, 255, 255, 0.03) 50%, rgba(255, 255, 255, 0.01) 80%, transparent 100%)',
+          backdropFilter: 'blur(20px) saturate(180%)',
+          WebkitBackdropFilter: 'blur(20px) saturate(180%)',
+          borderBottom: '1px solid rgba(255, 255, 255, 0.1)',
+          boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.1)',
           maskImage: 'linear-gradient(to bottom, black 0%, transparent 100%)',
           WebkitMaskImage: 'linear-gradient(to bottom, black 0%, transparent 100%)',
           willChange: 'opacity',
-          filter: 'blur(0px)',
-        }}
-      />
-      
-      {/* Additional overlay for extra content hiding effect */}
-      <motion.div
-        className="fixed top-0 left-0 right-0 pointer-events-none z-40"
-        style={{
-          opacity: blurOpacity,
-          height: '200px',
-          background: 'linear-gradient(to bottom, rgba(5, 5, 5, 0.85) 0%, rgba(5, 5, 5, 0.6) 40%, transparent 100%)',
         }}
       />
 
