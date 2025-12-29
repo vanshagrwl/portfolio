@@ -25,7 +25,6 @@ export const useMagneticEffect = (strength = 0.3) => {
   };
 
   const handleMouseLeave = () => {
-    // Add bounce effect when leaving
     setPosition({ x: 0, y: 0 });
   };
 

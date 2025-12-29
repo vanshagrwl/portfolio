@@ -4,7 +4,6 @@ import { Download, Mail } from 'lucide-react';
 import { useMagneticEffect } from '../hooks/useMagneticEffect';
 import { useSpotlight } from '../hooks/useSpotlight';
 import { blurIn, staggerContainer } from '../utils/animations';
-import { useBounceEffect } from '../hooks/useBounceEffect';
 
 const GlassBox = ({ children, className, delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) => {
   const { ref, spotlight, handleMouseMove, handleMouseLeave } = useSpotlight();
@@ -12,27 +11,17 @@ const GlassBox = ({ children, className, delay = 0 }: { children: React.ReactNod
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, scale: 0.9, filter: 'blur(10px)', y: 20 }}
+      initial={{ opacity: 0, scale: 0.95, filter: 'blur(8px)', y: 15 }}
       animate={{ opacity: 1, scale: 1, filter: 'blur(0px)', y: 0 }}
       transition={{ 
-        type: 'spring' as const,
-        stiffness: 100,
-        damping: 20,
-        mass: 0.5,
-        delay,
-        duration: 0.8
+        duration: 0.7, 
+        delay, 
+        ease: [0.25, 0.46, 0.45, 0.94],
+        type: 'tween'
       }}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      whileHover={{ 
-        y: -3, 
-        scale: 1.01,
-        transition: {
-          type: 'spring' as const,
-          stiffness: 400,
-          damping: 17
-        }
-      }}
+      whileHover={{ y: -2, scale: 1.005 }}
       className={`relative backdrop-blur-2xl bg-white/[0.03] border border-white/[0.05] rounded-2xl overflow-hidden transition-all duration-200 ${className}`}
       style={{
         boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.37)',
@@ -60,7 +49,6 @@ const GlassBox = ({ children, className, delay = 0 }: { children: React.ReactNod
 
 const MagneticButton = ({ children, onClick, variant = 'primary' }: { children: React.ReactNode; onClick?: () => void; variant?: 'primary' | 'secondary' }) => {
   const { ref, position, handleMouseMove, handleMouseLeave } = useMagneticEffect(0.15);
-  const { isBouncing, triggerBounce } = useBounceEffect();
 
   const styles = variant === 'primary'
     ? 'bg-gradient-to-r from-violet-600 to-indigo-600 text-white shadow-lg shadow-violet-500/30'
@@ -70,49 +58,13 @@ const MagneticButton = ({ children, onClick, variant = 'primary' }: { children: 
     <motion.button
       ref={ref as React.Ref<HTMLButtonElement>}
       onMouseMove={handleMouseMove as React.MouseEventHandler<HTMLButtonElement>}
-      onMouseLeave={() => {
-        handleMouseLeave();
-        triggerBounce();
-      }}
+      onMouseLeave={handleMouseLeave}
       onClick={onClick}
-      animate={{ 
-        x: position.x, 
-        y: isBouncing ? [position.y, position.y - 8, position.y + 4, position.y] : position.y,
-        scale: isBouncing ? [1.08, 1.2, 0.85, 1] : 1,
-        rotate: isBouncing ? [0, -5, 5, 0] : 0
-      }}
-      transition={{ 
-        x: { type: 'spring' as const, stiffness: 180, damping: 18, mass: 0.08 },
-        y: isBouncing ? {
-          type: 'spring' as const,
-          stiffness: 500,
-          damping: 12,
-          times: [0, 0.3, 0.7, 1]
-        } : { type: 'spring' as const, stiffness: 180, damping: 18, mass: 0.08 },
-        scale: isBouncing ? {
-          type: 'spring' as const,
-          stiffness: 500,
-          damping: 12,
-          times: [0, 0.3, 0.7, 1]
-        } : { type: 'spring' as const, stiffness: 400, damping: 17 },
-        rotate: isBouncing ? {
-          type: 'spring' as const,
-          stiffness: 500,
-          damping: 12,
-          times: [0, 0.3, 0.7, 1]
-        } : { duration: 0 }
-      }}
+      animate={{ x: position.x, y: position.y }}
+      transition={{ type: 'spring', stiffness: 180, damping: 18, mass: 0.08 }}
       className={`px-4 xs:px-6 sm:px-8 py-2.5 xs:py-3 sm:py-4 rounded-xl font-semibold flex items-center justify-center gap-2 transition-all text-xs xs:text-sm sm:text-base ${styles}`}
-      whileHover={{ 
-        scale: 1.08,
-        boxShadow: variant === 'primary' ? '0 0 25px rgba(124, 58, 237, 0.5)' : '0 0 15px rgba(255, 255, 255, 0.1)',
-        transition: {
-          type: 'spring' as const,
-          stiffness: 400,
-          damping: 17
-        }
-      }}
-      whileTap={{ scale: 0.92 }}
+      whileHover={{ scale: 1.05 }}
+      whileTap={{ scale: 0.95 }}
     >
       {children}
     </motion.button>
