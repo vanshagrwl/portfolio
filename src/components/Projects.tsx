@@ -25,6 +25,15 @@ const projects: Project[] = [
     featured: true
   },
   {
+    title: 'Personal Portfolio Website',
+    description: 'A modern, responsive portfolio website showcasing my projects, skills, and experience. Features smooth animations, glassmorphism design, interactive elements, and a fully responsive layout. Built with React, TypeScript, Framer Motion, and Tailwind CSS.',
+    image: 'https://images.pexels.com/photos/196644/pexels-photo-196644.jpeg?auto=compress&cs=tinysrgb&w=800',
+    tags: ['React', 'TypeScript', 'Framer Motion', 'Tailwind CSS', 'Vite', 'Responsive Design'],
+    liveUrl: '#',
+    githubUrl: 'https://github.com/vanshagrwl/portfolio',
+    featured: true
+  },
+  {
     title: 'AI Assistant Jarvis',
     description: 'A voice-activated AI assistant with speech recognition, natural language processing, and command execution. Features wake word detection, Google Gemini AI integration, FastAPI backend, React frontend, and WebSocket support for real-time communication.',
     image: 'https://images.pexels.com/photos/3861969/pexels-photo-3861969.jpeg?auto=compress&cs=tinysrgb&w=600',
@@ -299,25 +308,25 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
   return (
       <motion.div
         ref={ref}
-        initial={{ opacity: 0, scale: 0.92, rotateY: -10 }}
-        whileInView={{ opacity: 1, scale: 1, rotateY: 0 }}
+        initial={{ opacity: 0, scale: 0.95 }}
+        whileInView={{ opacity: 1, scale: 1 }}
         transition={{ 
-          duration: 0.7, 
-          delay: index * 0.1, 
+          duration: 0.6, 
+          delay: index * 0.08, 
           ease: [0.25, 0.46, 0.45, 0.94],
           type: 'tween'
         }}
         viewport={{ once: true, margin: '-100px' }}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
-        whileHover={{ y: -8, scale: 1.02 }}
-        className="group relative backdrop-blur-2xl bg-white/[0.03] border border-white/[0.05] rounded-2xl overflow-hidden transition-all duration-300"
+        whileHover={{ y: -4, scale: 1.01 }}
+        className="group relative backdrop-blur-2xl bg-white/[0.03] border border-white/[0.05] rounded-2xl overflow-hidden"
       >
       <div
-        className="absolute inset-0 opacity-0 transition-opacity duration-300 pointer-events-none"
+        className="absolute inset-0 opacity-0 transition-opacity duration-200 pointer-events-none"
         style={{
-          opacity: spotlight.opacity,
-          background: `radial-gradient(400px circle at ${spotlight.x}px ${spotlight.y}px, rgba(124, 58, 237, 0.15), transparent 70%)`
+          opacity: spotlight.opacity * 0.7,
+          background: `radial-gradient(400px circle at ${spotlight.x}px ${spotlight.y}px, rgba(124, 58, 237, 0.12), transparent 70%)`
         }}
       />
 
@@ -326,16 +335,11 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
           src={project.image}
           alt={project.title}
           className="w-full h-full object-cover"
-          whileHover={{ scale: 1.15, rotate: 2 }}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          whileHover={{ scale: 1.1 }}
+          transition={{ duration: 0.3, ease: 'easeOut' }}
         />
-        <motion.div 
-          className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"
-          whileHover={{ opacity: 0.9 }}
-        />
-        <motion.div
-          className="absolute inset-0 bg-gradient-to-r from-violet-600/10 via-transparent to-indigo-600/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
-        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-violet-600/10 via-transparent to-indigo-600/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
       </div>
 
       <div className="p-3 xs:p-4 sm:p-6 relative z-10">
@@ -369,8 +373,10 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
           {project.githubUrl && !project.featured && (
             <motion.button
               onClick={() => setShowCodeModal(true)}
-              whileHover={{ scale: 1.05 }}
-              className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-white/5 border border-white/10 text-white rounded-lg text-sm font-semibold cursor-pointer hover:bg-white/10 transition-colors"
+              whileHover={{ scale: 1.03 }}
+              whileTap={{ scale: 0.98 }}
+              transition={{ duration: 0.2 }}
+              className="flex-1 flex items-center justify-center gap-2 px-4 py-2 bg-white/5 border border-white/10 text-white rounded-lg text-sm font-semibold cursor-pointer hover:bg-white/10 transition-colors duration-200"
             >
               <Code className="w-3 h-3" />
               View Code

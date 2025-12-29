@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 interface Skill {
   name: string;
@@ -34,6 +34,57 @@ const categoryColors: { [key: string]: string } = {
 
 const SkillOrb = ({ skill, index }: { skill: Skill; index: number }) => {
   const [isHovered, setIsHovered] = useState(false);
+  const [screenSize, setScreenSize] = useState<'mobile' | 'tablet' | 'desktop'>('desktop');
+
+  // Detect screen size properly
+  useEffect(() => {
+    const checkScreenSize = () => {
+      const width = window.innerWidth;
+      if (width < 640) {
+        setScreenSize('mobile');
+      } else if (width < 768) {
+        setScreenSize('tablet');
+      } else {
+        setScreenSize('desktop');
+      }
+    };
+
+    checkScreenSize();
+    window.addEventListener('resize', checkScreenSize);
+    return () => window.removeEventListener('resize', checkScreenSize);
+  }, []);
+
+  // Responsive positioning - adjust for mobile/tablet to prevent overlap
+  const getResponsivePosition = () => {
+    if (screenSize === 'mobile') {
+      // Mobile adjustments: keep skills away from edges and adjust spacing
+      let adjustedX = skill.x;
+      let adjustedY = skill.y;
+      
+      // Clamp X positions to prevent edge cutoff (12% margin on each side)
+      if (adjustedX < 12) adjustedX = 12;
+      if (adjustedX > 88) adjustedX = 88;
+      
+      // Adjust Y positions for better mobile spacing
+      if (adjustedY < 12) adjustedY = 12;
+      if (adjustedY > 82) adjustedY = 82;
+      
+      return { x: adjustedX, y: adjustedY };
+    }
+    
+    if (screenSize === 'tablet') {
+      // Tablet adjustments
+      let adjustedX = skill.x;
+      if (adjustedX < 10) adjustedX = 10;
+      if (adjustedX > 90) adjustedX = 90;
+      return { x: adjustedX, y: skill.y };
+    }
+    
+    return { x: skill.x, y: skill.y };
+  };
+
+  const position = getResponsivePosition();
+  const responsiveScale = screenSize === 'mobile' ? skill.scale * 0.85 : (screenSize === 'tablet' ? skill.scale * 0.95 : skill.scale);
 
   return (
     <motion.div
@@ -42,9 +93,10 @@ const SkillOrb = ({ skill, index }: { skill: Skill; index: number }) => {
       transition={{ delay: index * 0.04, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
       style={{
         position: 'absolute',
-        left: `${skill.x}%`,
-        top: `${skill.y}%`,
-        transform: 'translate(-50%, -50%)'
+        left: `${position.x}%`,
+        top: `${position.y}%`,
+        transform: 'translate(-50%, -50%)',
+        zIndex: isHovered ? 50 : 1
       }}
       onHoverStart={() => setIsHovered(true)}
       onHoverEnd={() => setIsHovered(false)}
@@ -52,24 +104,22 @@ const SkillOrb = ({ skill, index }: { skill: Skill; index: number }) => {
     >
       <motion.div
         animate={{
-          y: [0, -15, 0],
-          scale: isHovered ? skill.scale * 1.4 : skill.scale,
-          zIndex: isHovered ? 50 : 1,
-          rotate: isHovered ? [0, 5, -5, 0] : 0
+          y: [0, -10, 0],
+          scale: isHovered ? responsiveScale * 1.3 : responsiveScale,
+          rotate: isHovered ? [0, 3, -3, 0] : 0
         }}
         transition={{
           y: { duration: 3.5 + index * 0.2, repeat: Infinity, ease: [0.4, 0, 0.6, 1] },
           scale: { duration: 0.35, ease: [0.16, 1, 0.3, 1] },
-          rotate: { duration: 0.5, ease: 'easeInOut' },
-          zIndex: { duration: 0 }
+          rotate: { duration: 0.5, ease: 'easeInOut' }
         }}
         className="relative"
       >
         <motion.div
           className={`absolute inset-0 rounded-full bg-gradient-to-br ${categoryColors[skill.category]} blur-xl opacity-30`}
           animate={{ 
-            scale: isHovered ? [1, 1.6, 1.5] : 1,
-            opacity: isHovered ? [0.3, 0.6, 0.3] : 0.3
+            scale: isHovered ? [1, 1.5, 1.4] : 1,
+            opacity: isHovered ? [0.3, 0.5, 0.3] : 0.3
           }}
           transition={{ 
             scale: { duration: 0.6, repeat: isHovered ? Infinity : 0, ease: 'easeInOut' },
@@ -77,13 +127,13 @@ const SkillOrb = ({ skill, index }: { skill: Skill; index: number }) => {
           }}
         />
         <motion.div 
-          className={`relative px-4 py-2 sm:px-6 sm:py-3 backdrop-blur-xl bg-gradient-to-br ${categoryColors[skill.category]} rounded-full border border-white/20 shadow-2xl`}
+          className={`relative px-3 py-1.5 xs:px-4 xs:py-2 sm:px-6 sm:py-3 backdrop-blur-xl bg-gradient-to-br ${categoryColors[skill.category]} rounded-full border border-white/20 shadow-2xl`}
           whileHover={{ 
             boxShadow: '0 0 30px rgba(124, 58, 237, 0.6)',
             borderColor: 'rgba(255, 255, 255, 0.4)'
           }}
         >
-          <span className="text-white font-semibold text-xs sm:text-sm whitespace-nowrap">
+          <span className="text-white font-semibold text-[10px] xs:text-xs sm:text-sm whitespace-nowrap">
             {skill.name}
           </span>
         </motion.div>
@@ -92,7 +142,7 @@ const SkillOrb = ({ skill, index }: { skill: Skill; index: number }) => {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
-            className="absolute top-full left-1/2 -translate-x-1/2 mt-2 px-3 py-1 bg-black/80 backdrop-blur-sm rounded-lg text-xs text-gray-300 whitespace-nowrap"
+            className="absolute top-full left-1/2 -translate-x-1/2 mt-2 px-2 py-1 bg-black/80 backdrop-blur-sm rounded-lg text-[10px] xs:text-xs text-gray-300 whitespace-nowrap z-50"
           >
             {skill.category}
           </motion.div>
@@ -158,7 +208,7 @@ export const Skills = () => {
             type: 'tween'
           }}
           viewport={{ once: true, margin: '-50px' }}
-          className="relative w-full h-[500px] sm:h-[600px] md:h-[700px] backdrop-blur-2xl bg-white/[0.02] border border-white/[0.05] rounded-2xl sm:rounded-3xl overflow-hidden"
+          className="relative w-full h-[450px] xs:h-[500px] sm:h-[600px] md:h-[700px] backdrop-blur-2xl bg-white/[0.02] border border-white/[0.05] rounded-2xl sm:rounded-3xl overflow-hidden"
         >
           <div className="absolute inset-0 bg-gradient-to-br from-violet-500/5 via-transparent to-indigo-500/5" />
 
@@ -166,11 +216,11 @@ export const Skills = () => {
             <SkillOrb key={skill.name} skill={skill} index={index} />
           ))}
 
-          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex gap-4 flex-wrap justify-center px-4">
+          <div className="absolute bottom-4 xs:bottom-6 sm:bottom-8 left-1/2 -translate-x-1/2 flex gap-2 xs:gap-3 sm:gap-4 flex-wrap justify-center px-2 xs:px-4">
             {Object.entries(categoryColors).map(([category, color]) => (
-              <div key={category} className="flex items-center gap-2 px-3 py-1 bg-black/40 backdrop-blur-sm rounded-full">
-                <div className={`w-3 h-3 rounded-full bg-gradient-to-br ${color}`} />
-                <span className="text-xs text-gray-300">{category}</span>
+              <div key={category} className="flex items-center gap-1.5 xs:gap-2 px-2 xs:px-3 py-0.5 xs:py-1 bg-black/40 backdrop-blur-sm rounded-full">
+                <div className={`w-2 h-2 xs:w-2.5 xs:h-2.5 sm:w-3 sm:h-3 rounded-full bg-gradient-to-br ${color}`} />
+                <span className="text-[10px] xs:text-xs text-gray-300">{category}</span>
               </div>
             ))}
           </div>
