@@ -21,25 +21,26 @@ const GlassBox = ({ children, className, delay = 0 }: { children: React.ReactNod
       }}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      whileHover={{ y: -2, scale: 1.005 }}
+      whileHover={{ y: -1, scale: 1.002 }}
       className={`relative backdrop-blur-2xl bg-white/[0.03] border border-white/[0.05] rounded-2xl overflow-hidden transition-all duration-200 ${className}`}
       style={{
         boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.37)',
-        willChange: 'transform, opacity'
       }}
     >
       <div
-        className="absolute inset-0 opacity-0 transition-opacity duration-300 pointer-events-none"
+        className="absolute inset-0 opacity-0 transition-opacity duration-500 pointer-events-none"
         style={{
-          opacity: spotlight.opacity * 0.5,
-          background: `radial-gradient(600px circle at ${spotlight.x}px ${spotlight.y}px, rgba(255,255,255,0.1), transparent 40%)`
+          opacity: spotlight.opacity * 0.4,
+          background: `radial-gradient(600px circle at ${spotlight.x}px ${spotlight.y}px, rgba(255,255,255,0.08), transparent 40%)`,
+          willChange: 'opacity'
         }}
       />
       <div
-        className="absolute inset-0 opacity-0 transition-opacity duration-300 pointer-events-none"
+        className="absolute inset-0 opacity-0 transition-opacity duration-500 pointer-events-none"
         style={{
-          opacity: spotlight.opacity,
-          background: `radial-gradient(200px circle at ${spotlight.x}px ${spotlight.y}px, rgba(124, 58, 237, 0.3), transparent 70%)`
+          opacity: spotlight.opacity * 0.8,
+          background: `radial-gradient(200px circle at ${spotlight.x}px ${spotlight.y}px, rgba(124, 58, 237, 0.25), transparent 70%)`,
+          willChange: 'opacity'
         }}
       />
       {children}

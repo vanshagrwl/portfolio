@@ -7,12 +7,14 @@ export const useSpotlight = () => {
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!ref.current) return;
 
+    // Throttle updates for smoother performance
+    const rect = ref.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    
     // Use requestAnimationFrame for smoother updates
     requestAnimationFrame(() => {
       if (!ref.current) return;
-      const rect = ref.current.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
       setSpotlight({ x, y, opacity: 1 });
     });
   };
