@@ -122,6 +122,7 @@ export const HeroBento = () => {
         initial="initial"
         animate="animate"
         className="max-w-7xl w-full grid grid-cols-1 md:grid-cols-12 gap-4 sm:gap-5 md:gap-6"
+        key="hero-container"
       >
         <GlassBox className="md:col-span-7 md:row-span-2 p-6 sm:p-8 md:p-12 flex flex-col justify-center" delay={0.1}>
           <motion.div {...blurIn} transition={{ delay: 0.3, duration: 1 }}>
@@ -182,12 +183,19 @@ export const HeroBento = () => {
         <GlassBox className="md:col-span-5 p-4 xs:p-6 sm:p-8 flex items-center justify-center" delay={0.2}>
           <motion.div
             className="relative w-32 h-32 xs:w-40 xs:h-40 sm:w-48 sm:h-48"
+            initial={{ scale: 1 }}
             animate={{ scale: [1, 1.015, 1] }}
-            transition={{ duration: 4, repeat: Infinity, ease: [0.4, 0, 0.6, 1] }}
+            transition={{ 
+              duration: 4, 
+              repeat: Infinity, 
+              ease: [0.4, 0, 0.6, 1],
+              repeatType: 'loop'
+            }}
           >
-            {/* Animated outer glow rings */}
+            {/* Animated outer glow rings - Fixed to prevent stuck animations */}
             <motion.div
               className="absolute inset-0 rounded-full bg-gradient-to-r from-violet-500 via-purple-500 to-indigo-500 blur-2xl opacity-30"
+              initial={{ scale: 1, opacity: 0.3 }}
               animate={{
                 scale: [1, 1.2, 1],
                 opacity: [0.3, 0.5, 0.3],
@@ -195,11 +203,13 @@ export const HeroBento = () => {
               transition={{
                 duration: 3,
                 repeat: Infinity,
-                ease: 'easeInOut',
+                ease: [0.4, 0, 0.6, 1],
+                repeatType: 'loop',
               }}
             />
             <motion.div
               className="absolute inset-0 rounded-full bg-gradient-to-r from-indigo-500 via-purple-500 to-violet-500 blur-xl opacity-40"
+              initial={{ scale: 1.1, opacity: 0.4 }}
               animate={{
                 scale: [1.1, 1, 1.1],
                 opacity: [0.4, 0.6, 0.4],
@@ -207,31 +217,37 @@ export const HeroBento = () => {
               transition={{
                 duration: 2.5,
                 repeat: Infinity,
-                ease: 'easeInOut',
+                ease: [0.4, 0, 0.6, 1],
                 delay: 0.5,
+                repeatType: 'loop',
               }}
             />
             
-            {/* Rotating border ring */}
+            {/* Rotating border ring - Fixed to prevent stuck */}
             <motion.div
               className="absolute inset-0 rounded-full"
               style={{
                 background: 'conic-gradient(from 0deg, transparent, violet, purple, indigo, violet, transparent)',
                 padding: '2px',
               }}
+              initial={{ rotate: 0 }}
               animate={{ rotate: 360 }}
               transition={{
                 duration: 8,
                 repeat: Infinity,
                 ease: 'linear',
+                repeatType: 'loop',
               }}
             >
               <div className="w-full h-full rounded-full bg-transparent" />
             </motion.div>
             
-            {/* Animated gradient border */}
+            {/* Animated gradient border - Fixed to prevent stuck */}
             <motion.div
               className="absolute inset-0 rounded-full bg-gradient-to-br from-violet-500 via-purple-500 to-indigo-500 p-1"
+              initial={{
+                background: 'linear-gradient(135deg, #7c3aed, #a855f7, #6366f1)',
+              }}
               animate={{
                 background: [
                   'linear-gradient(135deg, #7c3aed, #a855f7, #6366f1)',
@@ -245,6 +261,7 @@ export const HeroBento = () => {
                 duration: 4,
                 repeat: Infinity,
                 ease: 'linear',
+                repeatType: 'loop',
               }}
             >
               <div className="relative w-full h-full rounded-full overflow-hidden bg-gray-900">
@@ -285,40 +302,51 @@ export const HeroBento = () => {
               </div>
             </motion.div>
             
-            {/* Floating particles around the image */}
-            {[...Array(8)].map((_, i) => (
-              <motion.div
-                key={i}
-                className="absolute w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-gradient-to-r from-violet-400 to-indigo-400"
-                style={{
-                  left: '50%',
-                  top: '50%',
-                  x: '-50%',
-                  y: '-50%',
-                }}
-                animate={{
-                  x: [
-                    `calc(-50% + ${Math.cos((i * Math.PI) / 4) * 120}px)`,
-                    `calc(-50% + ${Math.cos((i * Math.PI) / 4) * 140}px)`,
-                    `calc(-50% + ${Math.cos((i * Math.PI) / 4) * 120}px)`,
-                  ],
-                  y: [
-                    `calc(-50% + ${Math.sin((i * Math.PI) / 4) * 120}px)`,
-                    `calc(-50% + ${Math.sin((i * Math.PI) / 4) * 140}px)`,
-                    `calc(-50% + ${Math.sin((i * Math.PI) / 4) * 120}px)`,
-                  ],
-                  opacity: [0.2, 0.7, 0.2],
-                  scale: [0.6, 1.3, 0.6],
-                  rotate: [0, 180, 360],
-                }}
-                transition={{
-                  duration: 4 + i * 0.4,
-                  repeat: Infinity,
-                  ease: 'easeInOut',
-                  delay: i * 0.15,
-                }}
-              />
-            ))}
+            {/* Floating particles around the image - Fixed animation */}
+            {[...Array(8)].map((_, i) => {
+              const angle = (i * Math.PI) / 4;
+              const radius = 120;
+              const radiusVariation = 20;
+              
+              return (
+                <motion.div
+                  key={`particle-${i}`}
+                  className="absolute w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-gradient-to-r from-violet-400 to-indigo-400"
+                  style={{
+                    left: '50%',
+                    top: '50%',
+                  }}
+                  initial={{
+                    x: `calc(-50% + ${Math.cos(angle) * radius}px)`,
+                    y: `calc(-50% + ${Math.sin(angle) * radius}px)`,
+                    opacity: 0.2,
+                    scale: 0.6,
+                  }}
+                  animate={{
+                    x: [
+                      `calc(-50% + ${Math.cos(angle) * radius}px)`,
+                      `calc(-50% + ${Math.cos(angle) * (radius + radiusVariation)}px)`,
+                      `calc(-50% + ${Math.cos(angle) * radius}px)`,
+                    ],
+                    y: [
+                      `calc(-50% + ${Math.sin(angle) * radius}px)`,
+                      `calc(-50% + ${Math.sin(angle) * (radius + radiusVariation)}px)`,
+                      `calc(-50% + ${Math.sin(angle) * radius}px)`,
+                    ],
+                    opacity: [0.2, 0.7, 0.2],
+                    scale: [0.6, 1.3, 0.6],
+                    rotate: [0, 180, 360],
+                  }}
+                  transition={{
+                    duration: 4 + i * 0.4,
+                    repeat: Infinity,
+                    ease: [0.4, 0, 0.6, 1],
+                    delay: i * 0.15,
+                    repeatType: 'loop',
+                  }}
+                />
+              );
+            })}
           </motion.div>
         </GlassBox>
 

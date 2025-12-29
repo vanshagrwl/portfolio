@@ -11,10 +11,10 @@ function App() {
   const { scrollY } = useScroll();
   
   // Transform scroll position to blur opacity
-  // Blur starts appearing at 100px scroll, fully visible at 300px
+  // Blur starts appearing at 50px scroll, fully visible at 250px for smoother transition
   const blurOpacity = useTransform(
     scrollY,
-    [100, 300],
+    [50, 250],
     [0, 1]
   );
 
@@ -62,18 +62,29 @@ function App() {
         }}
       />
 
-      {/* Scroll-based horizontal blur effect at top */}
+      {/* Scroll-based horizontal blur effect at top - Bigger and more blurry */}
       <motion.div
         className="fixed top-0 left-0 right-0 pointer-events-none z-50"
         style={{
           opacity: blurOpacity,
-          height: '150px',
-          background: 'linear-gradient(to bottom, rgba(5, 5, 5, 0.98) 0%, rgba(5, 5, 5, 0.9) 25%, rgba(5, 5, 5, 0.7) 50%, rgba(5, 5, 5, 0.4) 75%, transparent 100%)',
-          backdropFilter: 'blur(25px) saturate(180%)',
-          WebkitBackdropFilter: 'blur(25px) saturate(180%)',
+          height: '250px',
+          background: 'linear-gradient(to bottom, rgba(5, 5, 5, 0.99) 0%, rgba(5, 5, 5, 0.95) 15%, rgba(5, 5, 5, 0.9) 30%, rgba(5, 5, 5, 0.8) 50%, rgba(5, 5, 5, 0.6) 70%, rgba(5, 5, 5, 0.3) 85%, transparent 100%)',
+          backdropFilter: 'blur(40px) saturate(200%)',
+          WebkitBackdropFilter: 'blur(40px) saturate(200%)',
           maskImage: 'linear-gradient(to bottom, black 0%, transparent 100%)',
           WebkitMaskImage: 'linear-gradient(to bottom, black 0%, transparent 100%)',
           willChange: 'opacity',
+          filter: 'blur(0px)',
+        }}
+      />
+      
+      {/* Additional overlay for extra content hiding effect */}
+      <motion.div
+        className="fixed top-0 left-0 right-0 pointer-events-none z-40"
+        style={{
+          opacity: blurOpacity,
+          height: '200px',
+          background: 'linear-gradient(to bottom, rgba(5, 5, 5, 0.85) 0%, rgba(5, 5, 5, 0.6) 40%, transparent 100%)',
         }}
       />
 
