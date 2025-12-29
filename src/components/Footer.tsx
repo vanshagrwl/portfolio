@@ -8,18 +8,26 @@ const SocialButton = ({ icon: Icon, href, label }: { icon: any; href: string; la
 
   return (
     <motion.a
-      ref={ref}
+      ref={ref as React.Ref<HTMLAnchorElement>}
       href={href}
-      onMouseMove={handleMouseMove}
+      onMouseMove={handleMouseMove as React.MouseEventHandler<HTMLAnchorElement>}
       onMouseLeave={handleMouseLeave}
-      animate={{ x: position.x, y: position.y }}
-      transition={{ type: 'spring', stiffness: 150, damping: 15, mass: 0.1 }}
+      animate={{ x: position.x, y: position.y, rotate: [0, 5, -5, 0] }}
+      transition={{ 
+        x: { type: 'spring', stiffness: 150, damping: 15, mass: 0.1 },
+        y: { type: 'spring', stiffness: 150, damping: 15, mass: 0.1 },
+        rotate: { duration: 0.5, repeat: Infinity, repeatDelay: 2 }
+      }}
       className="group relative w-16 h-16 sm:w-20 sm:h-20 rounded-full backdrop-blur-2xl bg-white/[0.03] border border-white/[0.05] flex items-center justify-center overflow-hidden"
-      whileHover={{ scale: 1.1 }}
+      whileHover={{ scale: 1.15, boxShadow: '0 0 30px rgba(124, 58, 237, 0.6)' }}
       whileTap={{ scale: 0.9 }}
       aria-label={label}
     >
-      <div className="absolute inset-0 bg-gradient-to-br from-violet-500 to-indigo-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+      <motion.div 
+        className="absolute inset-0 bg-gradient-to-br from-violet-500 to-indigo-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+        animate={{ rotate: [0, 360] }}
+        transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
+      />
       <Icon className="w-7 h-7 sm:w-9 sm:h-9 text-gray-400 group-hover:text-white transition-colors duration-300 relative z-10" />
     </motion.a>
   );
@@ -37,7 +45,7 @@ export const Footer = () => {
   };
 
   return (
-    <footer className="relative py-20 px-4 sm:px-6 lg:px-8 overflow-hidden" id="contact">
+    <footer className="relative py-12 xs:py-16 sm:py-20 px-3 xs:px-4 sm:px-6 lg:px-8 overflow-hidden" id="contact">
       <div className="absolute inset-0 bg-gradient-to-t from-violet-900/10 to-transparent pointer-events-none" />
 
       <div className="max-w-7xl mx-auto relative z-10">
@@ -52,10 +60,30 @@ export const Footer = () => {
           viewport={{ once: true, margin: '-50px' }}
           className="text-center mb-16"
         >
-          <h2 className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-bold text-white mb-8">
+          <motion.h2 
+            className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-bold text-white mb-6 sm:mb-8"
+            animate={{
+              backgroundPosition: ['0%', '100%', '0%'],
+              scale: [1, 1.02, 1]
+            }}
+            transition={{
+              backgroundPosition: { duration: 3, repeat: Infinity, ease: 'linear' },
+              scale: { duration: 4, repeat: Infinity, ease: 'easeInOut' }
+            }}
+            style={{
+              backgroundImage: 'linear-gradient(90deg, #fff, #a855f7, #6366f1, #8b5cf6, #fff)',
+              backgroundSize: '200% auto',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+              lineHeight: '1.1',
+              paddingBottom: '0.15em',
+              overflow: 'visible'
+            }}
+          >
             LET'S BUILD
-          </h2>
-          <p className="text-xl md:text-2xl text-gray-400">
+          </motion.h2>
+          <p className="text-lg sm:text-xl md:text-2xl text-gray-400">
             Got a project in mind? Let's make it happen.
           </p>
         </motion.div>
@@ -70,9 +98,9 @@ export const Footer = () => {
               type: 'tween'
             }}
             viewport={{ once: true, margin: '-50px' }}
-            className="backdrop-blur-2xl bg-white/[0.03] border border-white/[0.05] rounded-2xl p-8"
+            className="backdrop-blur-2xl bg-white/[0.03] border border-white/[0.05] rounded-2xl p-6 sm:p-8"
           >
-            <h3 className="text-3xl font-bold text-white mb-6">Get in Touch</h3>
+            <h3 className="text-2xl sm:text-3xl font-bold text-white mb-4 sm:mb-6">Get in Touch</h3>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
                 <input
@@ -136,9 +164,9 @@ export const Footer = () => {
             viewport={{ once: true, margin: '-50px' }}
             className="flex flex-col justify-between"
           >
-            <div className="mb-8">
-              <h3 className="text-3xl font-bold text-white mb-4">Connect</h3>
-              <p className="text-gray-400 text-lg leading-relaxed">
+            <div className="mb-6 sm:mb-8">
+              <h3 className="text-2xl sm:text-3xl font-bold text-white mb-3 sm:mb-4">Connect</h3>
+              <p className="text-base sm:text-lg text-gray-400 leading-relaxed">
                 Always open to discussing new projects, creative ideas, or opportunities to be part of your visions.
               </p>
             </div>

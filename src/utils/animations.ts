@@ -9,19 +9,23 @@ export const fadeInUp = {
 };
 
 export const staggerContainer = {
+  initial: { opacity: 0 },
   animate: {
+    opacity: 1,
     transition: {
       staggerChildren: 0.1,
-      delayChildren: 0.05
+      delayChildren: 0.05,
+      duration: 0.5,
+      ease: [0.25, 0.46, 0.45, 0.94]
     }
   }
 };
 
 export const blurIn = {
-  initial: { opacity: 0, filter: 'blur(20px)' },
-  animate: { opacity: 1, filter: 'blur(0px)' },
+  initial: { opacity: 0, filter: 'blur(15px)', scale: 0.96 },
+  animate: { opacity: 1, filter: 'blur(0px)', scale: 1 },
   transition: { 
-    duration: 1, 
+    duration: 0.9, 
     ease: [0.25, 0.46, 0.45, 0.94],
     type: 'tween'
   }

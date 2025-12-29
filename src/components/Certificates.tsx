@@ -63,7 +63,7 @@ export const Certificates = () => {
   };
 
   return (
-    <section className="py-20 px-4 sm:px-6 lg:px-8" id="certificates">
+    <section className="py-12 xs:py-16 sm:py-20 px-3 xs:px-4 sm:px-6 lg:px-8" id="certificates">
       <div className="max-w-6xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -76,24 +76,41 @@ export const Certificates = () => {
           viewport={{ once: true, margin: '-50px' }}
           className="mb-16 text-center"
         >
-          <h2 className="text-5xl md:text-6xl font-bold text-white mb-4">
+          <motion.h2 
+            className="text-4xl sm:text-5xl md:text-6xl font-bold text-white mb-3 sm:mb-4"
+            animate={{
+              backgroundPosition: ['0%', '100%', '0%'],
+            }}
+            transition={{
+              duration: 4,
+              repeat: Infinity,
+              ease: 'linear'
+            }}
+            style={{
+              backgroundImage: 'linear-gradient(90deg, #fff, #a855f7, #6366f1, #fff)',
+              backgroundSize: '200% auto',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+              lineHeight: '1.1',
+              paddingBottom: '0.15em',
+              overflow: 'visible'
+            }}
+          >
             The Vault
-          </h2>
-          <p className="text-xl text-gray-400">Certifications & Achievements</p>
+          </motion.h2>
+          <motion.p 
+            className="text-lg sm:text-xl text-gray-400"
+            animate={{ opacity: [0.6, 1, 0.6] }}
+            transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
+          >
+            Certifications & Achievements
+          </motion.p>
         </motion.div>
 
         <div className="flex items-center justify-center">
-          <div className="relative perspective-1000">
-            <motion.button
-              onClick={handleExpandToggle}
-              className="absolute -bottom-16 left-1/2 -translate-x-1/2 px-6 py-3 bg-white/5 border border-white/10 rounded-full text-white font-semibold backdrop-blur-xl z-50"
-              whileHover={{ scale: 1.02 }}
-              animate={{ opacity: [0.5, 1, 0.5] }}
-              transition={{ duration: 2, repeat: Infinity }}
-            >
-              {isExpanded ? 'Click to Stack' : 'Click to Expand'}
-            </motion.button>
-            <div className="relative w-[300px] sm:w-[400px] h-[400px]">
+          <div className="relative perspective-1000 w-full flex flex-col items-center">
+            <div className="relative w-[280px] xs:w-[300px] sm:w-[350px] md:w-[400px] h-[350px] sm:h-[400px]">
               <AnimatePresence>
                 {certificates.map((cert, index) => {
                   const totalCards = certificates.length;
@@ -158,26 +175,30 @@ export const Certificates = () => {
                       onClick={(e) => handleCardClick(index, e)}
                     >
                       <motion.div
-                        className="w-full h-full backdrop-blur-2xl bg-gradient-to-br from-violet-500/10 to-indigo-500/10 border border-white/10 rounded-2xl p-8 shadow-2xl"
-                        whileHover={{ scale: selectedIndex === index ? 1 : 1.05 }}
+                        className="w-full h-full backdrop-blur-2xl bg-gradient-to-br from-violet-500/10 to-indigo-500/10 border border-white/10 rounded-2xl p-5 sm:p-6 md:p-8 shadow-2xl"
+                        whileHover={{ 
+                          scale: selectedIndex === index ? 1 : 1.08,
+                          boxShadow: selectedIndex === index ? '0 20px 60px rgba(124, 58, 237, 0.3)' : '0 20px 60px rgba(124, 58, 237, 0.5)',
+                          borderColor: 'rgba(124, 58, 237, 0.4)'
+                        }}
                         transition={{ type: 'spring', stiffness: 350, damping: 25 }}
                       >
-                        <div className="flex items-start justify-between mb-4">
-                          <div className="w-12 h-12 rounded-full bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-violet-500/30">
-                            <Award className="w-6 h-6 text-white" />
+                        <div className="flex items-start justify-between mb-3 sm:mb-4">
+                          <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-violet-500/30">
+                            <Award className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
                           </div>
-                          <span className="px-3 py-1 bg-white/5 border border-white/10 rounded-full text-xs text-gray-300">
+                          <span className="px-2 py-1 sm:px-3 sm:py-1 bg-white/5 border border-white/10 rounded-full text-xs text-gray-300">
                             {cert.date}
                           </span>
                         </div>
 
-                        <h3 className="text-2xl font-bold text-white mb-2">
+                        <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-white mb-2">
                           {cert.title}
                         </h3>
-                        <p className="text-violet-400 font-medium mb-4">
+                        <p className="text-sm sm:text-base text-violet-400 font-medium mb-3 sm:mb-4">
                           {cert.issuer}
                         </p>
-                        <p className="text-gray-300 text-sm leading-relaxed mb-6">
+                        <p className="text-xs sm:text-sm text-gray-300 leading-relaxed mb-4 sm:mb-6">
                           {cert.description}
                         </p>
 
@@ -205,6 +226,16 @@ export const Certificates = () => {
                 })}
               </AnimatePresence>
             </div>
+            <motion.button
+              onClick={handleExpandToggle}
+              className="mt-8 px-6 py-3 bg-white/5 border border-white/10 rounded-full text-white font-semibold backdrop-blur-xl z-50 relative"
+              whileHover={{ scale: 1.05, boxShadow: '0 0 20px rgba(124, 58, 237, 0.5)' }}
+              whileTap={{ scale: 0.95 }}
+              animate={{ opacity: [0.7, 1, 0.7] }}
+              transition={{ opacity: { duration: 2, repeat: Infinity } }}
+            >
+              {isExpanded ? 'Click to Stack' : 'Click to Expand'}
+            </motion.button>
           </div>
         </div>
       </div>

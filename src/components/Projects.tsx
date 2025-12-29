@@ -25,15 +25,6 @@ const projects: Project[] = [
     featured: true
   },
   {
-    title: 'Personal Portfolio Website',
-    description: 'A modern, responsive portfolio website showcasing my projects, skills, and experience. Features smooth animations, glassmorphism design, interactive elements, and a clean UI built with React, TypeScript, and Framer Motion.',
-    image: 'https://images.pexels.com/photos/196644/pexels-photo-196644.jpeg?auto=compress&cs=tinysrgb&w=800',
-    tags: ['React', 'TypeScript', 'Tailwind CSS', 'Framer Motion', 'Vite'],
-    liveUrl: '#',
-    githubUrl: 'https://github.com/vanshagrwl/portfolio',
-    featured: true
-  },
-  {
     title: 'AI Assistant Jarvis',
     description: 'A voice-activated AI assistant with speech recognition, natural language processing, and command execution. Features wake word detection, Google Gemini AI integration, FastAPI backend, React frontend, and WebSocket support for real-time communication.',
     image: 'https://images.pexels.com/photos/3861969/pexels-photo-3861969.jpeg?auto=compress&cs=tinysrgb&w=600',
@@ -205,8 +196,8 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
     return (
       <motion.div
         ref={ref}
-        initial={{ opacity: 0, y: 50 }}
-        whileInView={{ opacity: 1, y: 0 }}
+        initial={{ opacity: 0, y: 50, scale: 0.95 }}
+        whileInView={{ opacity: 1, y: 0, scale: 1 }}
         transition={{ 
           duration: 0.8, 
           delay: index * 0.1, 
@@ -216,7 +207,8 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
         viewport={{ once: true, margin: '-100px' }}
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
-        className="group relative backdrop-blur-2xl bg-white/[0.03] border border-white/[0.05] rounded-2xl overflow-hidden col-span-1 md:col-span-2"
+        whileHover={{ y: -5 }}
+        className="group relative backdrop-blur-2xl bg-white/[0.03] border border-white/[0.05] rounded-2xl overflow-hidden col-span-1 md:col-span-2 transition-all duration-300"
       >
         <div
           className="absolute inset-0 opacity-0 transition-opacity duration-300 pointer-events-none"
@@ -232,16 +224,19 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
               src={project.image}
               alt={project.title}
               className="w-full h-full object-cover"
-              whileHover={{ scale: 1.08 }}
-              transition={{ duration: 0.5, ease: 'easeOut' }}
+              whileHover={{ scale: 1.1, rotate: 1 }}
+              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+            />
+            <motion.div
+              className="absolute inset-0 bg-gradient-to-t from-violet-600/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
           </div>
 
-          <div className="p-8 flex flex-col justify-between relative z-10">
+          <div className="p-4 xs:p-6 sm:p-8 flex flex-col justify-between relative z-10">
             <div>
-              <h3 className="text-3xl font-bold text-white mb-4">{project.title}</h3>
-              <p className="text-gray-300 mb-6 leading-relaxed">{project.description}</p>
+              <h3 className="text-xl xs:text-2xl sm:text-3xl font-bold text-white mb-2 xs:mb-3 sm:mb-4" style={{ lineHeight: '1.2', paddingBottom: '0.1em' }}>{project.title}</h3>
+              <p className="text-xs xs:text-sm sm:text-base text-gray-300 mb-3 xs:mb-4 sm:mb-6 leading-relaxed">{project.description}</p>
 
               <div className="flex flex-wrap gap-2 mb-6">
                 {project.tags.map((tag) => (
@@ -302,10 +297,10 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
   }
 
   return (
-    <motion.div
-      ref={ref}
-        initial={{ opacity: 0, scale: 0.92 }}
-        whileInView={{ opacity: 1, scale: 1 }}
+      <motion.div
+        ref={ref}
+        initial={{ opacity: 0, scale: 0.92, rotateY: -10 }}
+        whileInView={{ opacity: 1, scale: 1, rotateY: 0 }}
         transition={{ 
           duration: 0.7, 
           delay: index * 0.1, 
@@ -313,10 +308,11 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
           type: 'tween'
         }}
         viewport={{ once: true, margin: '-100px' }}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      className="group relative backdrop-blur-2xl bg-white/[0.03] border border-white/[0.05] rounded-2xl overflow-hidden"
-    >
+        onMouseMove={handleMouseMove}
+        onMouseLeave={handleMouseLeave}
+        whileHover={{ y: -8, scale: 1.02 }}
+        className="group relative backdrop-blur-2xl bg-white/[0.03] border border-white/[0.05] rounded-2xl overflow-hidden transition-all duration-300"
+      >
       <div
         className="absolute inset-0 opacity-0 transition-opacity duration-300 pointer-events-none"
         style={{
@@ -330,15 +326,21 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
           src={project.image}
           alt={project.title}
           className="w-full h-full object-cover"
-          whileHover={{ scale: 1.12 }}
-          transition={{ duration: 0.5, ease: 'easeOut' }}
+          whileHover={{ scale: 1.15, rotate: 2 }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
+        <motion.div 
+          className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"
+          whileHover={{ opacity: 0.9 }}
+        />
+        <motion.div
+          className="absolute inset-0 bg-gradient-to-r from-violet-600/10 via-transparent to-indigo-600/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+        />
       </div>
 
-      <div className="p-6 relative z-10">
-        <h3 className="text-xl font-bold text-white mb-2">{project.title}</h3>
-        <p className="text-gray-400 text-sm mb-4">{project.description}</p>
+      <div className="p-3 xs:p-4 sm:p-6 relative z-10">
+        <h3 className="text-base xs:text-lg sm:text-xl font-bold text-white mb-2" style={{ lineHeight: '1.2', paddingBottom: '0.1em' }}>{project.title}</h3>
+        <p className="text-gray-400 text-xs sm:text-sm mb-2 xs:mb-3 sm:mb-4">{project.description}</p>
 
         <div className="flex flex-wrap gap-2 mb-4">
           {project.tags.map((tag) => (
@@ -390,7 +392,7 @@ const ProjectCard = ({ project, index }: { project: Project; index: number }) =>
 
 export const Projects = () => {
   return (
-    <section className="py-20 px-4 sm:px-6 lg:px-8" id="projects">
+    <section className="py-12 xs:py-16 sm:py-20 px-3 xs:px-4 sm:px-6 lg:px-8" id="projects">
       <div className="max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -403,13 +405,39 @@ export const Projects = () => {
           viewport={{ once: true, margin: '-50px' }}
           className="mb-16"
         >
-          <h2 className="text-5xl md:text-6xl font-bold text-white mb-4">
+          <motion.h2 
+            className="text-4xl sm:text-5xl md:text-6xl font-bold text-white mb-3 sm:mb-4"
+            animate={{
+              backgroundPosition: ['0%', '100%', '0%'],
+            }}
+            transition={{
+              duration: 4,
+              repeat: Infinity,
+              ease: 'linear'
+            }}
+            style={{
+              backgroundImage: 'linear-gradient(90deg, #fff, #a855f7, #6366f1, #fff)',
+              backgroundSize: '200% auto',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+              lineHeight: '1.1',
+              paddingBottom: '0.15em',
+              overflow: 'visible'
+            }}
+          >
             Featured Work
-          </h2>
-          <p className="text-xl text-gray-400">Selected Projects & Experiments</p>
+          </motion.h2>
+          <motion.p 
+            className="text-lg sm:text-xl text-gray-400"
+            animate={{ opacity: [0.6, 1, 0.6] }}
+            transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
+          >
+            Selected Projects & Experiments
+          </motion.p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-3 xs:gap-4 sm:gap-6">
           {projects.map((project, index) => (
             <ProjectCard key={project.title} project={project} index={index} />
           ))}

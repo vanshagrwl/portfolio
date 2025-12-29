@@ -11,14 +11,21 @@ const GlassBox = ({ children, className, delay = 0 }: { children: React.ReactNod
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0, scale: 0.92, filter: 'blur(10px)' }}
-      animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
-      transition={{ duration: 0.85, delay, ease: [0.16, 1, 0.3, 1] }}
+      initial={{ opacity: 0, scale: 0.95, filter: 'blur(8px)', y: 15 }}
+      animate={{ opacity: 1, scale: 1, filter: 'blur(0px)', y: 0 }}
+      transition={{ 
+        duration: 0.7, 
+        delay, 
+        ease: [0.25, 0.46, 0.45, 0.94],
+        type: 'tween'
+      }}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      className={`relative backdrop-blur-2xl bg-white/[0.03] border border-white/[0.05] rounded-2xl overflow-hidden ${className}`}
+      whileHover={{ y: -2, scale: 1.005 }}
+      className={`relative backdrop-blur-2xl bg-white/[0.03] border border-white/[0.05] rounded-2xl overflow-hidden transition-all duration-200 ${className}`}
       style={{
-        boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.37)'
+        boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.37)',
+        willChange: 'transform, opacity'
       }}
     >
       <div
@@ -55,7 +62,7 @@ const MagneticButton = ({ children, onClick, variant = 'primary' }: { children: 
       onClick={onClick}
       animate={{ x: position.x, y: position.y }}
       transition={{ type: 'spring', stiffness: 180, damping: 18, mass: 0.08 }}
-      className={`px-8 py-4 rounded-xl font-semibold flex items-center gap-2 transition-all ${styles}`}
+      className={`px-4 xs:px-6 sm:px-8 py-2.5 xs:py-3 sm:py-4 rounded-xl font-semibold flex items-center justify-center gap-2 transition-all text-xs xs:text-sm sm:text-base ${styles}`}
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
     >
@@ -65,19 +72,19 @@ const MagneticButton = ({ children, onClick, variant = 'primary' }: { children: 
 };
 
 const TechMarquee = () => {
-  const techs = ['React', 'Node.js', 'MongoDB', 'TypeScript', 'Tailwind', 'Python', 'Express', 'PostgreSQL', 'Docker', 'Git'];
+  const techs = ['React', 'Node.js', 'MongoDB', 'TypeScript', 'Tailwind', 'Python', 'Express', 'Git'];
 
   return (
-    <div className="relative overflow-hidden">
+    <div className="relative overflow-hidden w-full">
       <motion.div
-        className="flex gap-6"
+        className="flex gap-4 sm:gap-6"
         animate={{ x: [0, -1000] }}
         transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
       >
         {[...techs, ...techs, ...techs].map((tech, i) => (
           <div
             key={i}
-            className="px-4 py-2 bg-white/5 border border-white/10 rounded-lg text-sm font-medium whitespace-nowrap"
+            className="px-3 py-1.5 sm:px-4 sm:py-2 bg-white/5 border border-white/10 rounded-lg text-xs sm:text-sm font-medium whitespace-nowrap"
           >
             {tech}
           </div>
@@ -109,33 +116,74 @@ export const HeroBento = () => {
   }, []);
 
   return (
-    <section className="min-h-screen flex items-center justify-center px-4 sm:px-6 lg:px-8 py-20">
+    <section className="min-h-screen flex items-center justify-center px-3 xs:px-4 sm:px-6 lg:px-8 py-10 xs:py-12 sm:py-16 md:py-20">
       <motion.div
         variants={staggerContainer}
         initial="initial"
         animate="animate"
-        className="max-w-7xl w-full grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-6"
+        className="max-w-7xl w-full grid grid-cols-1 md:grid-cols-12 gap-4 sm:gap-5 md:gap-6"
       >
-        <GlassBox className="md:col-span-7 md:row-span-2 p-8 md:p-12 flex flex-col justify-center" delay={0.1}>
+        <GlassBox className="md:col-span-7 md:row-span-2 p-6 sm:p-8 md:p-12 flex flex-col justify-center" delay={0.1}>
           <motion.div {...blurIn} transition={{ delay: 0.3, duration: 1 }}>
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold text-white leading-tight mb-6">
+            <motion.h1 
+              className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold text-white mb-4 sm:mb-6"
+              animate={{
+                backgroundPosition: ['0%', '100%', '0%'],
+              }}
+              transition={{
+                duration: 5,
+                repeat: Infinity,
+                ease: 'linear'
+              }}
+              style={{
+                backgroundImage: 'linear-gradient(90deg, #fff, #a855f7, #6366f1, #fff)',
+                backgroundSize: '200% auto',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+                lineHeight: '1.1',
+                paddingBottom: '0.15em',
+                overflow: 'visible'
+              }}
+            >
               Building the
               <br />
-              <span className="bg-gradient-to-r from-violet-400 via-purple-400 to-indigo-400 text-transparent bg-clip-text">
+              <motion.span 
+                className="bg-gradient-to-r from-violet-400 via-purple-400 to-indigo-400 text-transparent bg-clip-text inline-block"
+                animate={{
+                  backgroundPosition: ['0%', '100%', '0%'],
+                }}
+                transition={{
+                  duration: 3,
+                  repeat: Infinity,
+                  ease: 'linear'
+                }}
+                style={{
+                  backgroundImage: 'linear-gradient(90deg, #a855f7, #6366f1, #8b5cf6, #a855f7)',
+                  backgroundSize: '200% auto',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text'
+                }}
+              >
                 Web of Tomorrow
-              </span>
-            </h1>
-            <p className="text-xl md:text-2xl text-gray-400 font-light">
+              </motion.span>
+            </motion.h1>
+            <motion.p 
+              className="text-lg sm:text-xl md:text-2xl text-gray-400 font-light"
+              animate={{ opacity: [0.7, 1, 0.7] }}
+              transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+            >
               Vansh Agarwal — Full Stack Developer
-            </p>
+            </motion.p>
           </motion.div>
         </GlassBox>
 
-        <GlassBox className="md:col-span-5 p-8 flex items-center justify-center" delay={0.2}>
+        <GlassBox className="md:col-span-5 p-4 xs:p-6 sm:p-8 flex items-center justify-center" delay={0.2}>
           <motion.div
-            className="relative w-48 h-48"
-            animate={{ scale: [1, 1.02, 1] }}
-            transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
+            className="relative w-32 h-32 xs:w-40 xs:h-40 sm:w-48 sm:h-48"
+            animate={{ scale: [1, 1.015, 1] }}
+            transition={{ duration: 4, repeat: Infinity, ease: [0.4, 0, 0.6, 1] }}
           >
             {/* Animated outer glow rings */}
             <motion.div
@@ -199,30 +247,23 @@ export const HeroBento = () => {
                 ease: 'linear',
               }}
             >
-              <div className="relative w-full h-full rounded-full overflow-hidden bg-gray-900" style={{ width: '192px', height: '192px' }}>
+              <div className="relative w-full h-full rounded-full overflow-hidden bg-gray-900">
                 {!imageError ? (
                   <>
                     {!imageLoaded && (
                       <div className="absolute inset-0 flex items-center justify-center z-10">
-                        <div className="w-8 h-8 border-4 border-violet-500 border-t-transparent rounded-full animate-spin" />
+                        <div className="w-6 h-6 sm:w-8 sm:h-8 border-4 border-violet-500 border-t-transparent rounded-full animate-spin" />
                       </div>
                     )}
                     <img
                       src="/photo.jpg"
                       alt="Vansh Agarwal"
                       className={`w-full h-full rounded-full object-cover ${imageLoaded ? 'opacity-100' : 'opacity-0'} transition-opacity duration-500`}
-                      style={{ 
-                        width: '100%', 
-                        height: '100%',
-                        display: imageLoaded ? 'block' : 'block'
-                      }}
                       onLoad={() => {
-                        console.log('Image onLoad triggered');
                         setImageLoaded(true);
                         setImageError(false);
                       }}
-                      onError={(e) => {
-                        console.error('Image failed to load:', e);
+                      onError={() => {
                         setImageError(true);
                         setImageLoaded(false);
                       }}
@@ -230,7 +271,7 @@ export const HeroBento = () => {
                     />
                   </>
                 ) : (
-                  <div className="w-full h-full rounded-full bg-gray-900 flex items-center justify-center text-6xl font-bold text-white" style={{ width: '192px', height: '192px' }}>
+                  <div className="w-full h-full rounded-full bg-gray-900 flex items-center justify-center text-4xl sm:text-6xl font-bold text-white">
                     VA
                   </div>
                 )}
@@ -245,10 +286,10 @@ export const HeroBento = () => {
             </motion.div>
             
             {/* Floating particles around the image */}
-            {[...Array(6)].map((_, i) => (
+            {[...Array(8)].map((_, i) => (
               <motion.div
                 key={i}
-                className="absolute w-2 h-2 rounded-full bg-violet-400"
+                className="absolute w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-gradient-to-r from-violet-400 to-indigo-400"
                 style={{
                   left: '50%',
                   top: '50%',
@@ -257,30 +298,31 @@ export const HeroBento = () => {
                 }}
                 animate={{
                   x: [
-                    `calc(-50% + ${Math.cos((i * Math.PI) / 3) * 140}px)`,
-                    `calc(-50% + ${Math.cos((i * Math.PI) / 3) * 150}px)`,
-                    `calc(-50% + ${Math.cos((i * Math.PI) / 3) * 140}px)`,
+                    `calc(-50% + ${Math.cos((i * Math.PI) / 4) * 120}px)`,
+                    `calc(-50% + ${Math.cos((i * Math.PI) / 4) * 140}px)`,
+                    `calc(-50% + ${Math.cos((i * Math.PI) / 4) * 120}px)`,
                   ],
                   y: [
-                    `calc(-50% + ${Math.sin((i * Math.PI) / 3) * 140}px)`,
-                    `calc(-50% + ${Math.sin((i * Math.PI) / 3) * 150}px)`,
-                    `calc(-50% + ${Math.sin((i * Math.PI) / 3) * 140}px)`,
+                    `calc(-50% + ${Math.sin((i * Math.PI) / 4) * 120}px)`,
+                    `calc(-50% + ${Math.sin((i * Math.PI) / 4) * 140}px)`,
+                    `calc(-50% + ${Math.sin((i * Math.PI) / 4) * 120}px)`,
                   ],
-                  opacity: [0.3, 0.6, 0.3],
-                  scale: [0.8, 1.2, 0.8],
+                  opacity: [0.2, 0.7, 0.2],
+                  scale: [0.6, 1.3, 0.6],
+                  rotate: [0, 180, 360],
                 }}
                 transition={{
-                  duration: 3 + i * 0.3,
+                  duration: 4 + i * 0.4,
                   repeat: Infinity,
                   ease: 'easeInOut',
-                  delay: i * 0.2,
+                  delay: i * 0.15,
                 }}
               />
             ))}
           </motion.div>
         </GlassBox>
 
-        <GlassBox className="md:col-span-5 p-6 flex items-center justify-center gap-4" delay={0.3}>
+        <GlassBox className="md:col-span-5 p-3 xs:p-4 sm:p-6 flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-2 xs:gap-3 sm:gap-4" delay={0.3}>
           <MagneticButton onClick={async () => {
             try {
               // Fetch the resume file
@@ -359,18 +401,18 @@ export const HeroBento = () => {
           </MagneticButton>
         </GlassBox>
 
-        <GlassBox className="md:col-span-3 p-6 flex items-center justify-center" delay={0.4}>
-          <div className="flex items-center gap-3">
+        <GlassBox className="md:col-span-3 p-4 sm:p-6 flex items-center justify-center" delay={0.4}>
+          <div className="flex items-center gap-2 sm:gap-3">
             <motion.div
-              className="w-3 h-3 rounded-full bg-green-500"
+              className="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-green-500"
               animate={{ opacity: [1, 0.3, 1] }}
               transition={{ duration: 2, repeat: Infinity }}
             />
-            <span className="text-sm font-semibold text-green-400">Open to Work</span>
+            <span className="text-xs sm:text-sm font-semibold text-green-400">Open to Work</span>
           </div>
         </GlassBox>
 
-        <GlassBox className="md:col-span-4 p-6 flex items-center" delay={0.5}>
+        <GlassBox className="md:col-span-4 p-4 sm:p-6 flex items-center overflow-hidden" delay={0.5}>
           <TechMarquee />
         </GlassBox>
       </motion.div>

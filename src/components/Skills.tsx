@@ -19,8 +19,6 @@ const skills: Skill[] = [
   { name: 'Express', category: 'Backend', x: 65, y: 55, scale: 1 },
   { name: 'Python', category: 'Backend', x: 85, y: 70, scale: 1.1 },
   { name: 'MongoDB', category: 'Database', x: 40, y: 80, scale: 1.1 },
-  { name: 'PostgreSQL', category: 'Database', x: 10, y: 85, scale: 1 },
-  { name: 'Docker', category: 'Tools', x: 55, y: 10, scale: 1 },
   { name: 'Git', category: 'Tools', x: 30, y: 40, scale: 0.9 },
   { name: 'Linux', category: 'Tools', x: 90, y: 40, scale: 1 },
   { name: 'Figma', category: 'Design', x: 20, y: 5, scale: 0.9 }
@@ -54,27 +52,41 @@ const SkillOrb = ({ skill, index }: { skill: Skill; index: number }) => {
     >
       <motion.div
         animate={{
-          y: [0, -10, 0],
-          scale: isHovered ? skill.scale * 1.3 : skill.scale,
-          zIndex: isHovered ? 50 : 1
+          y: [0, -15, 0],
+          scale: isHovered ? skill.scale * 1.4 : skill.scale,
+          zIndex: isHovered ? 50 : 1,
+          rotate: isHovered ? [0, 5, -5, 0] : 0
         }}
         transition={{
           y: { duration: 3.5 + index * 0.2, repeat: Infinity, ease: [0.4, 0, 0.6, 1] },
           scale: { duration: 0.35, ease: [0.16, 1, 0.3, 1] },
+          rotate: { duration: 0.5, ease: 'easeInOut' },
           zIndex: { duration: 0 }
         }}
         className="relative"
       >
         <motion.div
           className={`absolute inset-0 rounded-full bg-gradient-to-br ${categoryColors[skill.category]} blur-xl opacity-30`}
-          animate={{ scale: isHovered ? 1.5 : 1 }}
-          transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+          animate={{ 
+            scale: isHovered ? [1, 1.6, 1.5] : 1,
+            opacity: isHovered ? [0.3, 0.6, 0.3] : 0.3
+          }}
+          transition={{ 
+            scale: { duration: 0.6, repeat: isHovered ? Infinity : 0, ease: 'easeInOut' },
+            opacity: { duration: 0.6, repeat: isHovered ? Infinity : 0, ease: 'easeInOut' }
+          }}
         />
-        <div className={`relative px-6 py-3 backdrop-blur-xl bg-gradient-to-br ${categoryColors[skill.category]} rounded-full border border-white/20 shadow-2xl`}>
-          <span className="text-white font-semibold text-sm whitespace-nowrap">
+        <motion.div 
+          className={`relative px-4 py-2 sm:px-6 sm:py-3 backdrop-blur-xl bg-gradient-to-br ${categoryColors[skill.category]} rounded-full border border-white/20 shadow-2xl`}
+          whileHover={{ 
+            boxShadow: '0 0 30px rgba(124, 58, 237, 0.6)',
+            borderColor: 'rgba(255, 255, 255, 0.4)'
+          }}
+        >
+          <span className="text-white font-semibold text-xs sm:text-sm whitespace-nowrap">
             {skill.name}
           </span>
-        </div>
+        </motion.div>
         {isHovered && (
           <motion.div
             initial={{ opacity: 0, y: 10 }}
@@ -92,7 +104,7 @@ const SkillOrb = ({ skill, index }: { skill: Skill; index: number }) => {
 
 export const Skills = () => {
   return (
-    <section className="py-20 px-4 sm:px-6 lg:px-8" id="skills">
+    <section className="py-12 xs:py-16 sm:py-20 px-3 xs:px-4 sm:px-6 lg:px-8" id="skills">
       <div className="max-w-7xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -105,10 +117,36 @@ export const Skills = () => {
           viewport={{ once: true, margin: '-50px' }}
           className="mb-16 text-center"
         >
-          <h2 className="text-5xl md:text-6xl font-bold text-white mb-4">
+          <motion.h2 
+            className="text-4xl sm:text-5xl md:text-6xl font-bold text-white mb-3 sm:mb-4"
+            animate={{
+              backgroundPosition: ['0%', '100%', '0%'],
+            }}
+            transition={{
+              duration: 4,
+              repeat: Infinity,
+              ease: 'linear'
+            }}
+            style={{
+              backgroundImage: 'linear-gradient(90deg, #fff, #a855f7, #6366f1, #fff)',
+              backgroundSize: '200% auto',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+              lineHeight: '1.1',
+              paddingBottom: '0.15em',
+              overflow: 'visible'
+            }}
+          >
             The Ecosystem
-          </h2>
-          <p className="text-xl text-gray-400">Skills & Technologies</p>
+          </motion.h2>
+          <motion.p 
+            className="text-lg sm:text-xl text-gray-400"
+            animate={{ opacity: [0.6, 1, 0.6] }}
+            transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
+          >
+            Skills & Technologies
+          </motion.p>
         </motion.div>
 
         <motion.div
@@ -120,7 +158,7 @@ export const Skills = () => {
             type: 'tween'
           }}
           viewport={{ once: true, margin: '-50px' }}
-          className="relative w-full h-[600px] md:h-[700px] backdrop-blur-2xl bg-white/[0.02] border border-white/[0.05] rounded-3xl overflow-hidden"
+          className="relative w-full h-[500px] sm:h-[600px] md:h-[700px] backdrop-blur-2xl bg-white/[0.02] border border-white/[0.05] rounded-2xl sm:rounded-3xl overflow-hidden"
         >
           <div className="absolute inset-0 bg-gradient-to-br from-violet-500/5 via-transparent to-indigo-500/5" />
 

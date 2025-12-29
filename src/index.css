@@ -23,12 +23,47 @@
     -webkit-tap-highlight-color: transparent;
   }
 
-  /* GPU acceleration for animated elements */
+  /* GPU acceleration for animated elements - only when needed */
   [data-framer-component] {
-    will-change: transform, opacity;
     transform: translateZ(0);
     backface-visibility: hidden;
-    perspective: 1000px;
+  }
+  
+  /* Fix text clipping in headings */
+  h1, h2, h3, h4, h5, h6 {
+    line-height: 1.1;
+    padding-bottom: 0.15em;
+    overflow: visible;
+  }
+  
+  /* Smooth scrolling improvements */
+  html {
+    scroll-padding-top: 80px;
+  }
+  
+  /* Mobile touch optimizations */
+  @media (max-width: 768px) {
+    * {
+      -webkit-tap-highlight-color: transparent;
+    }
+    
+    h1, h2 {
+      line-height: 1.15;
+      padding-bottom: 0.2em;
+    }
+  }
+  
+  /* Prevent animation jitter */
+  * {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  /* Smooth animations */
+  @media (prefers-reduced-motion: no-preference) {
+    * {
+      animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    }
   }
 
   ::-webkit-scrollbar {

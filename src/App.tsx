@@ -1,4 +1,5 @@
 import { useEffect } from 'react';
+import { motion } from 'framer-motion';
 import { HeroBento } from './components/HeroBento';
 import { Experience } from './components/Experience';
 import { Skills } from './components/Skills';
@@ -26,6 +27,23 @@ function App() {
 
   return (
     <div className="min-h-screen bg-[#050505] text-white relative overflow-x-hidden">
+      {/* Animated background gradient */}
+      <motion.div
+        className="fixed inset-0 pointer-events-none z-0"
+        animate={{
+          background: [
+            'radial-gradient(circle at 20% 50%, rgba(124, 58, 237, 0.1) 0%, transparent 50%)',
+            'radial-gradient(circle at 80% 50%, rgba(99, 102, 241, 0.1) 0%, transparent 50%)',
+            'radial-gradient(circle at 50% 80%, rgba(168, 85, 247, 0.1) 0%, transparent 50%)',
+            'radial-gradient(circle at 20% 50%, rgba(124, 58, 237, 0.1) 0%, transparent 50%)',
+          ]
+        }}
+        transition={{
+          duration: 15,
+          repeat: Infinity,
+          ease: 'linear'
+        }}
+      />
       <div
         className="fixed inset-0 pointer-events-none z-0"
         style={{

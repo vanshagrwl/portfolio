@@ -67,9 +67,9 @@ const ExperienceCard = ({
           ref={ref}
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
-          className="flex-1 backdrop-blur-2xl bg-white/[0.03] border border-white/[0.05] rounded-2xl p-8 relative overflow-hidden mb-12"
-          whileHover={{ scale: 1.02 }}
-          transition={{ type: 'spring', stiffness: 300 }}
+          className="flex-1 backdrop-blur-2xl bg-white/[0.03] border border-white/[0.05] rounded-2xl p-6 sm:p-8 relative overflow-hidden mb-8 sm:mb-12"
+          whileHover={{ scale: 1.03, y: -5, boxShadow: '0 20px 60px rgba(124, 58, 237, 0.2)' }}
+          transition={{ type: 'spring', stiffness: 300, damping: 20 }}
         >
           <div
             className="absolute inset-0 opacity-0 transition-opacity duration-300 pointer-events-none"
@@ -82,8 +82,8 @@ const ExperienceCard = ({
           <div className="relative z-10">
             <div className="flex flex-wrap items-start justify-between gap-4 mb-4">
               <div>
-                <h3 className="text-2xl md:text-3xl font-bold text-white mb-2">{title}</h3>
-                <p className="text-gray-400 font-medium">{subtitle}</p>
+                <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-white mb-2">{title}</h3>
+                <p className="text-sm sm:text-base text-gray-400 font-medium">{subtitle}</p>
               </div>
               <span className="px-4 py-2 bg-violet-500/20 border border-violet-500/30 rounded-full text-violet-300 text-sm font-semibold whitespace-nowrap">
                 {badge}
@@ -134,7 +134,7 @@ export const Experience = () => {
   ];
 
   return (
-    <section className="py-20 px-4 sm:px-6 lg:px-8" id="experience">
+    <section className="py-12 xs:py-16 sm:py-20 px-3 xs:px-4 sm:px-6 lg:px-8" id="experience">
       <div className="max-w-6xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -147,10 +147,36 @@ export const Experience = () => {
           viewport={{ once: true, margin: '-50px' }}
           className="mb-16"
         >
-          <h2 className="text-5xl md:text-6xl font-bold text-white mb-4">
+          <motion.h2 
+            className="text-4xl sm:text-5xl md:text-6xl font-bold text-white mb-3 sm:mb-4"
+            animate={{
+              backgroundPosition: ['0%', '100%', '0%'],
+            }}
+            transition={{
+              duration: 4,
+              repeat: Infinity,
+              ease: 'linear'
+            }}
+            style={{
+              backgroundImage: 'linear-gradient(90deg, #fff, #a855f7, #6366f1, #fff)',
+              backgroundSize: '200% auto',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+              lineHeight: '1.1',
+              paddingBottom: '0.15em',
+              overflow: 'visible'
+            }}
+          >
             The Journey
-          </h2>
-          <p className="text-xl text-gray-400">Experience & Education</p>
+          </motion.h2>
+          <motion.p 
+            className="text-lg sm:text-xl text-gray-400"
+            animate={{ opacity: [0.6, 1, 0.6] }}
+            transition={{ duration: 2.5, repeat: Infinity, ease: 'easeInOut' }}
+          >
+            Experience & Education
+          </motion.p>
         </motion.div>
 
         <div className="space-y-0">
